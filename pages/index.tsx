@@ -1,14 +1,7 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  Image,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Flex, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import Loading from "../components/Loading";
+import Loading from "components/Loading";
 
 const Home = () => {
   const route = useRouter();

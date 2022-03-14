@@ -11,8 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import React, { ReactElement } from "react";
-import Layout from "../components/Layouts/Layout";
-import ProtectedWrapper from "../components/ProtectedWrapper";
+import ProtectedWrapper from "components/ProtectedWrapper";
+import Layout from "components/Layouts/Layout";
 
 const HomePage = () => {
   const { data: session } = useSession();

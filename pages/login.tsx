@@ -1,24 +1,14 @@
-import { ReactElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Flex,
   Stack,
   Avatar,
   Heading,
   Box,
-  FormControl,
-  InputGroup,
-  InputLeftElement,
-  Input,
-  InputRightElement,
-  FormHelperText,
   Button,
-  Link,
-  chakra,
   Divider,
-  FormErrorMessage,
 } from "@chakra-ui/react";
-import { FaUserAlt, FaLock } from "react-icons/fa";
-import PlatformLogins from "../components/PlatfomLoginButtons";
+import PlatformLogins from "components/Widgets/PlatfomLoginButtons";
 import {
   ClientSafeProvider,
   getProviders,
@@ -27,31 +17,28 @@ import {
   useSession,
 } from "next-auth/react";
 import { BuiltInProviderType } from "next-auth/providers";
-import Loading from "../components/Loading";
+import Loading from "components/Loading";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-
-const CFaUserAlt = chakra(FaUserAlt);
-const CFaLock = chakra(FaLock);
+import InputComponent from "components/Widgets/InputComponent";
 
 const schema = yup.object().shape({
   email: yup
     .string()
     .email("email is invalid (eg. example@example.com)")
     .required(),
-  password: yup.string().min(5).required(),
+  password: yup.string().required(),
 });
 
-interface Data {
+export interface IData {
   email: string;
   password: string;
 }
 
 const Login = () => {
   const route = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
   const { status } = useSession();
 
   const [providers, setProviders] = useState<Record<
@@ -65,9 +52,8 @@ const Login = () => {
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<Data>({ resolver: yupResolver(schema) });
+  } = useForm<IData>({ resolver: yupResolver(schema) });
 
-  const handleShowClick = () => setShowPassword(!showPassword);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -123,44 +109,18 @@ const Login = () => {
                       fontWeight="600"
                       fontStyle="italic"
                     >
-                      ❌ Invalid Email or Password 😱 
+                      ❌ Invalid Email or Password 😱
                     </Box>
                   ) : null}
-                  <FormControl isInvalid={!!errors.email}>
-                    <InputGroup>
-                      <InputLeftElement pointerEvents="none">
-                        <CFaUserAlt color="gray.300" />
-                      </InputLeftElement>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="email address "
-                        {...register("email")}
-                      />
-                    </InputGroup>
-                    <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl>
-                    <InputGroup>
-                      <InputLeftElement pointerEvents="none" color="gray.300">
-                        <CFaLock color="gray.300" />
-                      </InputLeftElement>
-                      <Input
-                        id="true"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Password"
-                        {...register("password")}
-                      />
-                      <InputRightElement width="4.5rem">
-                        <Button h="1.75rem" size="sm" onClick={handleShowClick}>
-                          {showPassword ? "Hide" : "Show"}
-                        </Button>
-                      </InputRightElement>
-                    </InputGroup>
-                    <FormHelperText textAlign="right">
-                      <Link>forgot password?</Link>
-                    </FormHelperText>
-                  </FormControl>
+
+                  {/**INPUT COMPONENT */}
+                  <InputComponent
+                    register={register}
+                    email={errors.email}
+                    isEmail={true}
+                  />
+                  <InputComponent register={register} isEmail={false} />
+
                   <Button
                     borderRadius={0}
                     type="submit"

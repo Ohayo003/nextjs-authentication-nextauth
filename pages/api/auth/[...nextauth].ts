@@ -1,9 +1,8 @@
-import NextAuth, { EventCallbacks } from "next-auth";
+import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { error } from "console";
 
 type IUserData = {
   name: string;
@@ -22,7 +21,7 @@ export default NextAuth({
     CredentialsProvider({
       name: "credentials",
       id: "credentials",
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         let user: Partial<IUserData> = {};
 
         if (credentials) {
