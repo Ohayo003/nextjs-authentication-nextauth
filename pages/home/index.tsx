@@ -1,27 +1,11 @@
-import {
-  Heading,
-  Avatar,
-  Box,
-  Center,
-  Flex,
-  Text,
-  Image,
-  Stack,
-  Button,
-  SimpleGrid,
-  Icon,
-  Badge,
-  VStack,
-  HStack,
-} from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
+import { SimpleGrid } from "@chakra-ui/react";
 import React, { ReactElement } from "react";
 import ProtectedWrapper from "components/ProtectedWrapper";
 import Layout from "components/Layouts/Layout";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import CardComponent from "components/Widgets/Dashboard/CardComponent";
-import StatsComponent from "components/Widgets/Dashboard/StatsComponent";
 import ReportComponent from "components/Widgets/Dashboard/ReportComponent";
+import StatsComponent from "components/Widgets/Dashboard/StatsComponent";
 
 const HomePage = () => {
   return (
