@@ -21,7 +21,7 @@ const PlatformLogins = ({ provider }: IPlatformLogins) => {
         aria-label="facebook-btn"
         onClick={() =>
           signIn(provider?.facebook.id, {
-            callbackUrl: "http://localhost:3000/home",
+            callbackUrl: "http://localhost:3000/home/",
           })
         }
       />
@@ -31,7 +31,7 @@ const PlatformLogins = ({ provider }: IPlatformLogins) => {
         aria-label="github-btn"
         onClick={() =>
           signIn(provider?.github.id, {
-            callbackUrl: "http://localhost:3000/home",
+            callbackUrl: "http://localhost:3000/home/",
           })
         }
       />
@@ -41,7 +41,7 @@ const PlatformLogins = ({ provider }: IPlatformLogins) => {
         aria-label="Google-btn"
         onClick={() =>
           signIn(provider?.google.id, {
-            callbackUrl: "http://localhost:3000/home",
+            callbackUrl: "http://localhost:3000/home/",
           })
         }
       />

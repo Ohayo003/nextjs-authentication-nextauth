@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -23,7 +24,11 @@ const Header = () => {
   return (
     <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-        <Box fontWeight="bold">NEXT AUTH APP</Box>
+        <Link passHref href="/home/">
+          <Box fontWeight="bold" _hover={{ cursor: "pointer" }}>
+            NEXT AUTH APP
+          </Box>
+        </Link>
 
         <Flex alignItems={"center"}>
           <Stack direction={"row"} spacing={7}>
@@ -71,7 +76,9 @@ const Header = () => {
                 <br />
                 <MenuDivider />
                 <MenuItem>Your Servers</MenuItem>
-                <MenuItem>Account Settings</MenuItem>
+                <Link passHref href="/home/profile">
+                  <MenuItem>Profile</MenuItem>
+                </Link>
                 <MenuItem
                   onClick={() =>
                     signOut({

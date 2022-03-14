@@ -8,7 +8,7 @@ import {
   Button,
   Divider,
 } from "@chakra-ui/react";
-import PlatformLogins from "components/Widgets/PlatfomLoginButtons";
+import PlatformLogins from "components/Widgets/Login/PlatfomLoginButtons";
 import {
   ClientSafeProvider,
   getProviders,
@@ -22,7 +22,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import InputComponent from "components/Widgets/InputComponent";
+import InputComponent from "components/Widgets/Login/InputComponent";
 
 const schema = yup.object().shape({
   email: yup
@@ -73,7 +73,7 @@ const Login = () => {
     return <Loading />;
   }
   if (status === "authenticated") {
-    route.push("/home");
+    route.push("/home/");
     return null;
   } else {
     return (
