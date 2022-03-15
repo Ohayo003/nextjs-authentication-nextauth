@@ -7,8 +7,8 @@ import {
   Box,
   Button,
   Divider,
+  HStack,
 } from "@chakra-ui/react";
-import PlatformLogins from "components/Widgets/Login/PlatfomLoginButtons";
 import {
   ClientSafeProvider,
   getProviders,
@@ -18,18 +18,23 @@ import {
 } from "next-auth/react";
 import { BuiltInProviderType } from "next-auth/providers";
 import Loading from "components/Loading";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import InputComponent from "components/Widgets/Login/InputComponent";
+import InputComponent from "components/Widgets/login/InputComponent";
+import ProviderButtons from "components/Widgets/login/ProviderButtons";
+import { FaFacebookSquare, FaGithub, FaGoogle } from "react-icons/fa";
+import { useCallbackUrl } from "hooks/useCallbackUrl";
+import TextField from "components/Widgets/TextField";
 
 const schema = yup.object().shape({
   email: yup
     .string()
     .email("email is invalid (eg. example@example.com)")
+    .trim()
     .required(),
-  password: yup.string().required(),
+  password: yup.string().trim().required(),
 });
 
 export interface IData {
@@ -38,32 +43,29 @@ export interface IData {
 }
 
 const Login = () => {
-  const route = useRouter();
   const { status } = useSession();
 
-  const [providers, setProviders] = useState<Record<
-    LiteralUnion<BuiltInProviderType, string>,
-    ClientSafeProvider
-  > | null>();
+  const route = useRouter();
+
+  const callbackUrl = useCallbackUrl();
+
+  console.log(callbackUrl);
 
   ///useForm from react-hook-form
   const {
     register,
-    setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<IData>({ resolver: yupResolver(schema) });
+  } = useForm<IData>({
+    mode: "onChange",
+    resolver: yupResolver(schema),
+  });
 
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    getProviders().then(setProviders);
-  }, []);
-
   const onSubmit = handleSubmit(async (data) => {
-    await signIn(providers?.credentials.id, {
+    await signIn("credentials", {
       ...data,
-      callbackUrl: "http://localhost:3000/home",
       redirect: false,
     });
     setError(true);
@@ -73,7 +75,7 @@ const Login = () => {
     return <Loading />;
   }
   if (status === "authenticated") {
-    route.push("/home/");
+    route.push(callbackUrl);
     return null;
   } else {
     return (
@@ -102,7 +104,7 @@ const Login = () => {
                   backgroundColor="whiteAlpha.900"
                   boxShadow="md"
                 >
-                  {error ? (
+                  {error && (
                     <Box
                       color="red"
                       textAlign="center"
@@ -111,15 +113,22 @@ const Login = () => {
                     >
                       ❌ Invalid Email or Password 😱
                     </Box>
-                  ) : null}
+                  )}
 
                   {/**INPUT COMPONENT */}
-                  <InputComponent
-                    register={register}
-                    email={errors.email}
-                    isEmail={true}
+                  <TextField
+                    type="email"
+                    error={errors.email?.message}
+                    {...register("email")}
                   />
-                  <InputComponent register={register} isEmail={false} />
+
+                  <TextField
+                    type="password"
+                    error={errors.password?.message}
+                    {...register("password")}
+                  />
+
+                  {/* <InputComponent register={register} isEmail={false} /> */}
 
                   <Button
                     borderRadius={0}
@@ -132,7 +141,8 @@ const Login = () => {
                   </Button>
                   <Divider orientation="horizontal" borderColor="gray" />
 
-                  <PlatformLogins provider={providers!} />
+                  {/**Provider Button Section */}
+                  <Socials />
                 </Stack>
               </form>
             </Box>
@@ -141,6 +151,28 @@ const Login = () => {
       </>
     );
   }
+};
+
+const Socials = () => {
+  return (
+    <HStack justify="center">
+      <ProviderButtons
+        provider="facebook"
+        icon={<FaFacebookSquare size={45} />}
+        aria-label="facebook"
+      />
+      <ProviderButtons
+        provider="github"
+        icon={<FaGithub size={45} />}
+        aria-label="facebook"
+      />
+      <ProviderButtons
+        provider="google"
+        icon={<FaGoogle size={45} />}
+        aria-label="facebook"
+      />
+    </HStack>
+  );
 };
 
 export default Login;

@@ -8,19 +8,16 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   useColorModeValue,
+  MenuDivider,
   Stack,
-  useColorMode,
   Center,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 
 const Header = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession({ required: true });
 
   return (
     <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
@@ -33,9 +30,9 @@ const Header = () => {
 
         <Flex alignItems={"center"}>
           <Stack direction={"row"} spacing={7}>
-            <Button onClick={toggleColorMode}>
+            {/* <Button onClick={toggleColorMode}>
               {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-            </Button>
+            </Button> */}
 
             <Menu>
               <MenuButton

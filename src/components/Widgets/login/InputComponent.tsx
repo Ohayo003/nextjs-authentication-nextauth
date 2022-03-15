@@ -19,16 +19,16 @@ const CFaLock = chakra(FaLock);
 
 type InputComponentType = {
   register: UseFormRegister<IData>;
-  email?: FieldError | undefined;
+  error?: string;
   isEmail: Boolean;
 };
 
-const InputComponent = ({ register, email, isEmail }: InputComponentType) => {
+const InputComponent = ({ register, error, isEmail }: InputComponentType) => {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowClick = () => setShowPassword(!showPassword);
 
   return (
-    <FormControl isInvalid={isEmail ? !!email : !!null}>
+    <FormControl isInvalid={!!error}>
       <InputGroup>
         <InputLeftElement pointerEvents="none">
           {isEmail ? (
@@ -56,7 +56,7 @@ const InputComponent = ({ register, email, isEmail }: InputComponentType) => {
           <Link>forgot password?</Link>
         </FormHelperText>
       )}
-      {isEmail ? <FormErrorMessage>{email?.message}</FormErrorMessage> : null}
+      <FormErrorMessage>{error}</FormErrorMessage>
     </FormControl>
   );
 };

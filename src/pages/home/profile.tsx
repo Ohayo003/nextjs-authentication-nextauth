@@ -11,11 +11,10 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import ProtectedWrapper from "components/ProtectedWrapper";
-import Layout from "components/Layouts/Layout";
+import Layout from "components/Layout";
 
 const Profile = () => {
-  const { data: session } = useSession();
+  const { data: session } = useSession({ required: true });
 
   return (
     <Box background="#FAF7F0">
@@ -93,9 +92,5 @@ const Profile = () => {
 export default Profile;
 
 Profile.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <ProtectedWrapper>
-      <Layout>{page}</Layout>
-    </ProtectedWrapper>
-  );
+  return <Layout>{page}</Layout>;
 };

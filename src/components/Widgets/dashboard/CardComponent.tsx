@@ -11,8 +11,6 @@ import {
 import React from "react";
 import { IconType } from "react-icons";
 
-import { FaChevronUp, FaChevronDown } from "react-icons/fa";
-
 type CardComponentType = {
   count: number;
   title: string;

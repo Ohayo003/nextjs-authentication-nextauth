@@ -15,7 +15,7 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 1 * 1 * 60 * 60,
+    maxAge: 1 * 1 * 1 * 5,
   },
   providers: [
     CredentialsProvider({
@@ -68,7 +68,7 @@ export default NextAuth({
   ],
   pages: {
     signIn: "/login",
-    signOut: "/",
+    signOut: "/login",
   },
   callbacks: {
     async session({ session, token }) {

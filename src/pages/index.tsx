@@ -1,11 +1,22 @@
-import { Button, Flex, Heading, Image, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import Loading from "components/Loading";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import Loading from "components/Loading";
+import { useCallbackUrl } from "hooks/useCallbackUrl";
 
 const Home = () => {
   const route = useRouter();
   const { status } = useSession();
+
+  const callbackUrl = useCallbackUrl();
 
   const handleChangeRouteLogin = () => {
     route.push("/login");
@@ -15,7 +26,7 @@ const Home = () => {
     return <Loading />;
   }
   if (status === "authenticated") {
-    route.push("/home");
+    route.push(callbackUrl);
     return null;
   } else {
     return (
